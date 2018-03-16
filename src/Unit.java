@@ -1,6 +1,6 @@
 public enum  Unit {
-    GreatSwords(6, 1, 5, 4, 1, 2, 4, 3, 1, 1),
-    BlackOrcs(6, 2, 4, 4, 1, 2, 4, 3, 1, 1);
+    GreatSwords(6, 1, 5, 4, 1, 2, 4, 3, 1, 1, 10),
+    BlackOrcs(6, 2, 4, 4, 1, 2, 4, 3, 1, 1, 5);
 
     protected int bravery;
     protected int wounds;
@@ -10,12 +10,14 @@ public enum  Unit {
     protected int save;
     protected int range;
 
-    protected int attacks;
+    protected int attacksPerModel;
     protected int successfulHit;
     protected int successfulWound;
     protected int rend;
     protected int damageDealt;
     protected int unitSize;
+
+    protected int minimumUnitSize;
 
     protected int ranks;
 
@@ -23,13 +25,13 @@ public enum  Unit {
 
     protected boolean modelsSlain = false;
 
-    Unit(int bravery, int wounds, int movementInInches, int save, int range, int attacks, int successfulHit, int successfulWound, int rend, int damageDealt) {
+    Unit(int bravery, int wounds, int movementInInches, int save, int range, int attacksPerModel, int successfulHit, int successfulWound, int rend, int damageDealt, int minimumUnitSize) {
         this.bravery = bravery;
         this.wounds = wounds;
         this.movementInInches = movementInInches;
         this.save = save;
         this.range = range;
-        this.attacks = attacks;
+        this.attacksPerModel = attacksPerModel;
         this.successfulHit = successfulHit;
         this.successfulWound = successfulWound;
         this.rend = rend;
@@ -37,7 +39,7 @@ public enum  Unit {
     }
 
     public int attack() {
-        int attempts = getAttacks() * ((getUnitSize() / getRanks()) * getRange());
+        int attempts = getAttacksPerModel() * numberOfValidAttacks();
 
         int successes = 0;
 
@@ -99,6 +101,19 @@ public enum  Unit {
         return damageTaken;
     }
 
+    public int numberOfValidAttacks() {
+        int validAttacks;
+
+        if (getUnitSize() / getRanks() < getMinimumUnitSize()) {
+            validAttacks = (getUnitSize() / getRanks()) * getRange();
+        }
+        else {
+            validAttacks = getUnitSize();
+        }
+
+        return validAttacks;
+    }
+
     public int getUnitSize() {
         return unitSize;
     }
@@ -147,12 +162,12 @@ public enum  Unit {
         this.range = range;
     }
 
-    public int getAttacks() {
-        return attacks;
+    public int getAttacksPerModel() {
+        return attacksPerModel;
     }
 
-    public void setAttacks(int attacks) {
-        this.attacks = attacks;
+    public void setAttacksPerModel(int attacksPerModel) {
+        this.attacksPerModel = attacksPerModel;
     }
 
     public int getSuccessfulHit() {
@@ -193,5 +208,13 @@ public enum  Unit {
 
     public void setRanks(int ranks) {
         this.ranks = ranks;
+    }
+
+    public int getMinimumUnitSize() {
+        return minimumUnitSize;
+    }
+
+    public void setMinimumUnitSize(int minimumUnitSize) {
+        this.minimumUnitSize = minimumUnitSize;
     }
 }

@@ -10,20 +10,38 @@ public class Main {
         int gSRanks;
         int bORanks;
 
-        //Greatswords: Number of troops and Number of ranks
-        System.out.println("How many Greatswords are in the unit?");
+        //Greatswords: Number of troops
+        System.out.println("How many Greatswords are in the unit?\n");
         numberOfGS = input.nextInt();
-        Unit.GreatSwords.unitSize = numberOfGS;
 
+        //Check if unit one size is appropriate
+        if (numberOfGS < Unit.GreatSwords.getMinimumUnitSize()) {
+            Unit.GreatSwords.setUnitSize(Unit.GreatSwords.getMinimumUnitSize());
+            System.out.printf("Not enough models in unit. Unit size set to minimum: %s\n", Unit.GreatSwords.getMinimumUnitSize());
+        }
+        else {
+            Unit.GreatSwords.unitSize = numberOfGS;
+        }
+
+        //Assigning unit one formation depth
         System.out.println("How many ranks are there in the formation?");
         gSRanks = input.nextInt();
         Unit.GreatSwords.ranks = gSRanks;
 
-        //Black Orcs: Number of troops and Number of ranks
+        //Black Orcs: Number of troops
         System.out.println("How many Black Orcs are there in the unit?");
         numberOfBO = input.nextInt();
-        Unit.BlackOrcs.unitSize = numberOfBO;
 
+        //Check if unit two size is appropriate
+        if (numberOfBO < Unit.BlackOrcs.getMinimumUnitSize()) {
+            Unit.BlackOrcs.setUnitSize(Unit.BlackOrcs.getMinimumUnitSize());
+            System.out.printf("Not enough models in unit. Unit size set to minimum: %s\n", Unit.BlackOrcs.getMinimumUnitSize());
+        }
+        else {
+            Unit.BlackOrcs.unitSize = numberOfBO;
+        }
+
+        //Assigning unit two formation depth
         System.out.println("How many ranks are there in the formation?");
         bORanks = input.nextInt();
         Unit.BlackOrcs.ranks = bORanks;
@@ -47,8 +65,8 @@ public class Main {
                 break;
             }
 
-
             //Attacker attack loop
+            System.out.println("Greatswords attack their enemy");
             int damageDoneToDefender;
             damageDoneToDefender = attackPhase(Unit.BlackOrcs, Unit.GreatSwords);
 
@@ -61,6 +79,7 @@ public class Main {
 
 
             //Counter attack loop
+            System.out.println("Black Orcs counter attack!!\n");
             damageDoneToDefender = attackPhase(Unit.GreatSwords, Unit.BlackOrcs);
             int unitTwoKilled = killedModels(damageDoneToDefender, Unit.GreatSwords);
 
