@@ -1,6 +1,16 @@
 public enum  Unit {
     GreatSwords(6, 1, 5, 4, 1, 2, 4, 3, 1, 1, 10),
-    BlackOrcs(6, 2, 4, 4, 1, 2, 4, 3, 1, 1, 5);
+    BlackOrcs(6, 2, 4, 4, 1, 2, 4, 3, 1, 1, 5),
+    Bestigor(6, 1, 6, 4, 1, 2, 4, 3, 1, 1, 5),
+    ChaosChosen(7, 2, 5, 4, 1, 3, 3, 3, 1, 1, 5),
+    Executioners(7, 1, 6, 4, 1, 2, 3, 3, 0, 1, 5),
+    GraveGuard(10, 1, 4, 5, 1, 2, 3, 3, 1, 1, 5),
+    MenAtArms(4, 1, 5, 6, 2, 1, 5, 4, 0, 1, 10),
+    Retributors(7, 3, 4, 4, 1, 2, 3, 3, 1, 2, 3),
+    SwordMasters(7, 1, 6, 4, 1, 2, 3, 3, 1, 1, 5),
+    TombGuard(10, 1, 4, 5, 1, 2, 4, 3, 1, 1, 5),
+    WildWoodRangers(7, 1, 6, 5, 2, 2, 3, 3, 1, 1, 5),
+    StormVermin(5, 1, 6, 5, 2, 2, 4, 3, 1, 1, 10);
 
     protected int bravery;
     protected int wounds;
