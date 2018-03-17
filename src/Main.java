@@ -4,47 +4,73 @@ public class Main {
 
     public static void main(String[] args) {
 
+        //Necessary information variables
         Scanner input = new Scanner(System.in);
-        int numberOfGS;
-        int numberOfBO;
-        int gSRanks;
-        int bORanks;
+        int attackerModels;
+        int defendingModels;
+        int attackerRanks;
+        int defenderRanks;
 
-        //Greatswords: Number of troops
-        System.out.println("How many Greatswords are in the unit?\n");
-        numberOfGS = input.nextInt();
+        //Unit names
+        String attackerUnitName;
+        String defenderUnitName;
+
+        //Attacking and Defending unit declarations
+        Unit attackingUnit;
+        Unit defendingUnit;
+
+
+        //Select units for attacker and defender
+        //Attacker
+        System.out.println("Select the attacking unit:");
+        showUnitSelection();
+        attackingUnit = selectUnit(input.nextInt());
+        attackerUnitName = attackingUnit.getUnitName();
+
+        //Unit size of attacker
+        System.out.printf("How many models are there in the %s unit?\n", attackerUnitName);
+        attackerModels = input.nextInt();
 
         //Check if unit one size is appropriate
-        if (numberOfGS < Unit.GreatSwords.getMinimumUnitSize()) {
-            Unit.GreatSwords.setUnitSize(Unit.GreatSwords.getMinimumUnitSize());
-            System.out.printf("Not enough models in unit. Unit size set to minimum: %s\n", Unit.GreatSwords.getMinimumUnitSize());
+        if (attackerModels < attackingUnit.getMinimumUnitSize()) {
+            attackingUnit.setUnitSize(attackingUnit.getMinimumUnitSize());
+            System.out.printf("Not enough models in unit. Unit size set to minimum: %s\n", attackingUnit.getMinimumUnitSize());
         }
         else {
-            Unit.GreatSwords.unitSize = numberOfGS;
+            attackingUnit.setUnitSize(attackerModels);
         }
 
-        //Assigning unit one formation depth
-        System.out.println("How many ranks are there in the formation?");
-        gSRanks = input.nextInt();
-        Unit.GreatSwords.ranks = gSRanks;
+        //Assigning attacker formation depth
+        System.out.println("How many ranks are there in the formation?\n");
+        attackerRanks = input.nextInt();
+        attackingUnit.setRanks(attackerRanks);
 
-        //Black Orcs: Number of troops
-        System.out.println("How many Black Orcs are there in the unit?");
-        numberOfBO = input.nextInt();
+
+        //Defender
+        System.out.println("Select the defending unit:");
+        showUnitSelection();
+        defendingUnit = selectUnit(input.nextInt());
+        defenderUnitName = defendingUnit.getUnitName();
+
+        //Unit size of defender
+        System.out.printf("How many models are there in the %s unit?\n", defenderUnitName);
+        defendingModels = input.nextInt();
 
         //Check if unit two size is appropriate
-        if (numberOfBO < Unit.BlackOrcs.getMinimumUnitSize()) {
-            Unit.BlackOrcs.setUnitSize(Unit.BlackOrcs.getMinimumUnitSize());
-            System.out.printf("Not enough models in unit. Unit size set to minimum: %s\n", Unit.BlackOrcs.getMinimumUnitSize());
+        if (defendingModels < defendingUnit.getMinimumUnitSize()) {
+            defendingUnit.setUnitSize(defendingUnit.getMinimumUnitSize());
+            System.out.printf("Not enough models in unit. Unit size set to minimum: %s\n", defendingUnit.getMinimumUnitSize());
         }
         else {
-            Unit.BlackOrcs.unitSize = numberOfBO;
+            defendingUnit.setUnitSize(defendingModels);
         }
 
-        //Assigning unit two formation depth
-        System.out.println("How many ranks are there in the formation?");
-        bORanks = input.nextInt();
-        Unit.BlackOrcs.ranks = bORanks;
+        //Assigning defender formation depth
+        System.out.println("How many ranks are there in the formation?\n");
+        defenderRanks = input.nextInt();
+        defendingUnit.setRanks(defenderRanks);
+
+
 
         System.out.println("Combat begins!!\n\n");
 
@@ -55,59 +81,52 @@ public class Main {
 
             ++turnTimer;
 
-            if (Unit.GreatSwords.getUnitSize() <= 0) {
-                System.out.print("Black Orcs win the combat!\n\n");
+            if (attackingUnit.getUnitSize() <= 0) {
+                System.out.printf("%s win the combat!\n\n", defenderUnitName);
                 break;
             }
 
-            if (Unit.BlackOrcs.getUnitSize() <= 0) {
-                System.out.print("Greatswords win the combat!\n\n");
+            if (defendingUnit.getUnitSize() <= 0) {
+                System.out.printf("%s win the combat!\n\n", attackerUnitName);
                 break;
             }
 
             //Attacker attack loop
-            System.out.println("Greatswords attack their enemy");
+            System.out.printf("%s attack their enemy", attackerUnitName);
             int damageDoneToDefender;
-            damageDoneToDefender = attackPhase(Unit.BlackOrcs, Unit.GreatSwords);
+            damageDoneToDefender = attackPhase(defendingUnit, attackingUnit);
 
-            System.out.printf("Black Orcs take %s damage from Greatswords\n", damageDoneToDefender);
-            int unitOneKilled = killedModels(damageDoneToDefender, Unit.BlackOrcs);
-            System.out.printf("%s Black Orcs died as a result of combat\n", unitOneKilled);
+            System.out.printf("%s take %s damage from Greatswords\n", defenderUnitName, damageDoneToDefender);
+            int unitOneKilled = killedModels(damageDoneToDefender, defendingUnit);
+            System.out.printf("%s %s died as a result of combat\n", unitOneKilled, defenderUnitName);
 
-            Unit.BlackOrcs.setUnitSize(Unit.BlackOrcs.getUnitSize() - unitOneKilled);
-            System.out.printf("Remaining Black Orcs: %s\n\n", Unit.BlackOrcs.getUnitSize());
+            defendingUnit.setUnitSize(defendingUnit.getMinimumUnitSize() - unitOneKilled);
+            System.out.printf("Remaining %s: %s\n\n", defenderUnitName, defendingUnit.getUnitSize());
 
 
             //Counter attack loop
-            System.out.println("Black Orcs counter attack!!\n");
-            damageDoneToDefender = attackPhase(Unit.GreatSwords, Unit.BlackOrcs);
-            int unitTwoKilled = killedModels(damageDoneToDefender, Unit.GreatSwords);
+            System.out.printf("%s counter attack!!\n", defenderUnitName);
 
-            System.out.printf("%s Greatswords died as a result of combat\n", unitTwoKilled);
-            Unit.GreatSwords.setUnitSize(Unit.GreatSwords.getUnitSize() - unitTwoKilled);
+            damageDoneToDefender = attackPhase(attackingUnit, defendingUnit);
+            int unitTwoKilled = killedModels(damageDoneToDefender, attackingUnit);
 
-            System.out.printf("Remaining Greatswords: %s\n\n", Unit.GreatSwords.getUnitSize());
-
-            /*
-            Possibly redundant code
-            if (Unit.GreatSwords.unitSize < 0 || Unit.BlackOrcs.unitSize < 0) {
-                break;
-            }
-            */
+            System.out.printf("%s %s died as a result of combat\n", unitTwoKilled, attackerUnitName);
+            attackingUnit.setUnitSize(attackingUnit.getUnitSize() - unitTwoKilled);
+            System.out.printf("Remaining %s: %s\n\n", attackerUnitName, attackingUnit.getUnitSize());
 
             //Battleshock Test
-            if (!Unit.BlackOrcs.modelsSlain) {
-                battleShock(Unit.BlackOrcs, unitOneKilled);
+            if (!defendingUnit.modelsSlain) {
+                battleShock(defendingUnit, unitOneKilled);
             }
 
-            if (!Unit.GreatSwords.modelsSlain) {
-                battleShock(Unit.GreatSwords, unitTwoKilled);
+            if (!attackingUnit.modelsSlain) {
+                battleShock(defendingUnit, unitTwoKilled);
             }
 
             //Turn timer read out
             System.out.printf("Turn %s\n\n __________________________________________\n\n", turnTimer);
 
-        } while (Unit.GreatSwords.unitSize > 0 && Unit.BlackOrcs.unitSize > 0 && turnTimer < 6);
+        } while (attackingUnit.getUnitSize() > 0 && defendingUnit.getUnitSize() > 0 && turnTimer < 6);
     }
 
     //Attack calculations and damage
@@ -179,5 +198,52 @@ public class Main {
         System.out.printf("%s cowards run from the battlefield! A shameful display!\n\n", cowards);
         defender.unitSize = defender.unitSize - cowards;
         defender.modelsSlain = false;
+    }
+
+    private static Unit selectUnit(int selection) {
+
+        switch (selection) {
+            case 1:
+                return Unit.GreatSwords;
+            case 2:
+                return Unit.BlackOrcs;
+            case 3:
+                return Unit.Bestigor;
+            case 4:
+                return Unit.ChaosChosen;
+            case 5:
+                return Unit.MenAtArms;
+            case 6:
+                return Unit.Executioners;
+            case 7:
+                return Unit.GraveGuard;
+            case 8:
+                return Unit.Retributors;
+            case 9:
+                return Unit.StormVermin;
+            case 10:
+                return Unit.SwordMasters;
+            case 11:
+                return Unit.TombGuard;
+            case 12:
+                return Unit.WildWoodRangers;
+        }
+
+        return null;
+    }
+
+    private static void showUnitSelection() {
+        System.out.println("1 - Greatswords\n" +
+                "2 - Black Orcs\n" +
+                "3 - Bestigor\n" +
+                "4 - Chosen\n" +
+                "5 - Men at Arms\n" +
+                "6 - Executioners\n" +
+                "7 - Grave Guard\n" +
+                "8 - Retributors\n" +
+                "9 - Stormvermin\n" +
+                "10 - Swordmasters\n" +
+                "11 - Tomb Guard\n" +
+                "12 - Wildwood Rangers\n");
     }
 }
