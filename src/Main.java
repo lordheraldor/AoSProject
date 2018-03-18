@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -24,8 +25,18 @@ public class Main {
         //Attacker
         System.out.println("Select the attacking unit:");
         showUnitSelection();
-        attackingUnit = selectUnit(input.nextInt());
-        attackerUnitName = attackingUnit.getUnitName();
+        System.out.print("Enter selection:");
+
+        //Collect unit
+        try {
+            attackingUnit = selectUnit(input.nextInt());
+            attackerUnitName = attackingUnit.getUnitName();
+        } catch (NullPointerException e) {
+            System.out.println("Invalid option, please pick a valid option\n");
+            showUnitSelection();
+            attackingUnit = selectUnit(input.nextInt());
+            attackerUnitName = attackingUnit.getUnitName();
+        }
 
         //Unit size of attacker
         System.out.printf("How many models are there in the %s unit?\n", attackerUnitName);
@@ -47,10 +58,20 @@ public class Main {
 
 
         //Defender
-        System.out.println("Select the defending unit:");
+        System.out.println("Select the defending unit:\n");
         showUnitSelection();
-        defendingUnit = selectUnit(input.nextInt());
-        defenderUnitName = defendingUnit.getUnitName();
+        System.out.print("Enter selection:");
+
+        //Collect unit
+        try {
+            defendingUnit = selectUnit(input.nextInt());
+            defenderUnitName = defendingUnit.getUnitName();
+        } catch (NullPointerException e) {
+            System.out.println("Invalid option, please pick a valid option\n");
+            showUnitSelection();
+            defendingUnit = selectUnit(input.nextInt());
+            defenderUnitName = defendingUnit.getUnitName();
+        }
 
         //Unit size of defender
         System.out.printf("How many models are there in the %s unit?\n", defenderUnitName);
@@ -92,7 +113,7 @@ public class Main {
             }
 
             //Attacker attack loop
-            System.out.printf("%s attack their enemy", attackerUnitName);
+            System.out.printf("%s attack their enemy\n\n", attackerUnitName);
             int damageDoneToDefender;
             damageDoneToDefender = attackPhase(defendingUnit, attackingUnit);
 
@@ -100,12 +121,12 @@ public class Main {
             int unitOneKilled = killedModels(damageDoneToDefender, defendingUnit);
             System.out.printf("%s %s died as a result of combat\n", unitOneKilled, defenderUnitName);
 
-            defendingUnit.setUnitSize(defendingUnit.getMinimumUnitSize() - unitOneKilled);
+            defendingUnit.setUnitSize(defendingUnit.getUnitSize() - unitOneKilled);
             System.out.printf("Remaining %s: %s\n\n", defenderUnitName, defendingUnit.getUnitSize());
 
 
             //Counter attack loop
-            System.out.printf("%s counter attack!!\n", defenderUnitName);
+            System.out.printf("%s counter attack!!\n\n", defenderUnitName);
 
             damageDoneToDefender = attackPhase(attackingUnit, defendingUnit);
             int unitTwoKilled = killedModels(damageDoneToDefender, attackingUnit);
