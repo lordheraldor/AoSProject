@@ -1,32 +1,34 @@
 public enum  Unit {
-    GreatSwords(6, 1, 5, 4, 1, 2, 4, 3, 1, 1, 10),
-    BlackOrcs(6, 2, 4, 4, 1, 2, 4, 3, 1, 1, 5),
-    Bestigor(6, 1, 6, 4, 1, 2, 4, 3, 1, 1, 5),
-    ChaosChosen(7, 2, 5, 4, 1, 3, 3, 3, 1, 1, 5),
-    Executioners(7, 1, 6, 4, 1, 2, 3, 3, 0, 1, 5),
-    GraveGuard(10, 1, 4, 5, 1, 2, 3, 3, 1, 1, 5),
-    MenAtArms(4, 1, 5, 6, 2, 1, 5, 4, 0, 1, 10),
-    Retributors(7, 3, 4, 4, 1, 2, 3, 3, 1, 2, 3),
-    SwordMasters(7, 1, 6, 4, 1, 2, 3, 3, 1, 1, 5),
-    TombGuard(10, 1, 4, 5, 1, 2, 4, 3, 1, 1, 5),
-    WildWoodRangers(7, 1, 6, 5, 2, 2, 3, 3, 1, 1, 5),
-    StormVermin(5, 1, 6, 5, 2, 2, 4, 3, 1, 1, 10);
+    GREATSWORDS("Greatswords", 6, 1, 5, 4, 1, 2, 4, 3, 1, 1, 10),
+    BLACKORCS("Black Orcs", 6, 2, 4, 4, 1, 2, 4, 3, 1, 1, 5),
+    BESTIGOR("Bestigor", 6, 1, 6, 4, 1, 2, 4, 3, 1, 1, 5),
+    CHAOSCHOSEN("Chosen", 7, 2, 5, 4, 1, 3, 3, 3, 1, 1, 5),
+    EXECUTIONERS("Executioners", 7, 1, 6, 4, 1, 2, 3, 3, 0, 1, 5),
+    GRAVEGUARD("Grave Guard", 10, 1, 4, 5, 1, 2, 3, 3, 1, 1, 5),
+    MENATARMS("Men at Arms", 4, 1, 5, 6, 2, 1, 5, 4, 0, 1, 10),
+    RETRIBUTORS("Retributors", 7, 3, 4, 4, 1, 2, 3, 3, 1, 2, 3),
+    SWORDMASTERS("Swordmasters", 7, 1, 6, 4, 1, 2, 3, 3, 1, 1, 5),
+    TOMBGUARD("Tomb Guard", 10, 1, 4, 5, 1, 2, 4, 3, 1, 1, 5),
+    WILDWOODRANGERS("Wildwood Rangers", 7, 1, 6, 5, 2, 2, 3, 3, 1, 1, 5),
+    STORMVERMIN("Stormvermin", 5, 1, 6, 5, 2, 2, 4, 3, 1, 1, 10);
+
+    protected String unitName;
 
     protected int bravery;
-    protected int wounds;
 
+    protected int wounds;
     protected int movementInInches;
 
     protected int save;
-    protected int range;
 
+    protected int range;
     protected int attacksPerModel;
+
     protected int successfulHit;
     protected int successfulWound;
     protected int rend;
     protected int damageDealt;
     protected int unitSize;
-
     protected int minimumUnitSize;
 
     protected int ranks;
@@ -35,7 +37,8 @@ public enum  Unit {
 
     protected boolean modelsSlain = false;
 
-    Unit(int bravery, int wounds, int movementInInches, int save, int range, int attacksPerModel, int successfulHit, int successfulWound, int rend, int damageDealt, int minimumUnitSize) {
+    Unit(String unitName, int bravery, int wounds, int movementInInches, int save, int range, int attacksPerModel, int successfulHit, int successfulWound, int rend, int damageDealt, int minimumUnitSize) {
+        this.unitName = unitName;
         this.bravery = bravery;
         this.wounds = wounds;
         this.movementInInches = movementInInches;
@@ -122,6 +125,10 @@ public enum  Unit {
         }
 
         return validAttacks;
+    }
+
+    public String getUnitName() {
+        return unitName;
     }
 
     public int getUnitSize() {

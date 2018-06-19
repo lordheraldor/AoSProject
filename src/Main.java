@@ -1,4 +1,3 @@
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -17,26 +16,25 @@ public class Main {
         String defenderUnitName;
 
         //Attacking and Defending unit declarations
-        Unit attackingUnit;
-        Unit defendingUnit;
+        Unit attackingUnit = null;
+        Unit defendingUnit = null;
 
 
         //Select units for attacker and defender
         //Attacker
-        System.out.println("Select the attacking unit:");
-        showUnitSelection();
-        System.out.print("Enter selection:");
-
-        //Collect unit
-        try {
-            attackingUnit = selectUnit(input.nextInt());
-            attackerUnitName = attackingUnit.getUnitName();
-        } catch (NullPointerException e) {
-            System.out.println("Invalid option, please pick a valid option\n");
-            showUnitSelection();
-            attackingUnit = selectUnit(input.nextInt());
-            attackerUnitName = attackingUnit.getUnitName();
+       while (attackingUnit == null){
+           try {
+               System.out.println("Please select the attacking unit:");
+               showUnitSelection();
+               System.out.print("Enter selection:");
+               attackingUnit = selectUnit(input.nextInt());
+           } catch (Exception e) {
+               unitSelectionErrorMessage();
+           }
         }
+
+        //Collect attacker's name
+        attackerUnitName = attackingUnit.getUnitName();
 
         //Unit size of attacker
         System.out.printf("How many models are there in the %s unit?\n", attackerUnitName);
@@ -58,20 +56,20 @@ public class Main {
 
 
         //Defender
-        System.out.println("Select the defending unit:\n");
-        showUnitSelection();
-        System.out.print("Enter selection:");
-
-        //Collect unit
-        try {
-            defendingUnit = selectUnit(input.nextInt());
-            defenderUnitName = defendingUnit.getUnitName();
-        } catch (NullPointerException e) {
-            System.out.println("Invalid option, please pick a valid option\n");
-            showUnitSelection();
-            defendingUnit = selectUnit(input.nextInt());
-            defenderUnitName = defendingUnit.getUnitName();
+        // Collect unit
+        while (defendingUnit == null) {
+            try {
+                System.out.println("Please select the defending unit:");
+                showUnitSelection();
+                System.out.print("Enter selection:");
+                defendingUnit = selectUnit(input.nextInt());
+            } catch (Exception e) {
+                unitSelectionErrorMessage();
+            }
         }
+
+        //Collect defender's name
+        defenderUnitName = defendingUnit.unitName;
 
         //Unit size of defender
         System.out.printf("How many models are there in the %s unit?\n", defenderUnitName);
@@ -225,29 +223,29 @@ public class Main {
 
         switch (selection) {
             case 1:
-                return Unit.GreatSwords;
+                return Unit.GREATSWORDS;
             case 2:
-                return Unit.BlackOrcs;
+                return Unit.BLACKORCS;
             case 3:
-                return Unit.Bestigor;
+                return Unit.BESTIGOR;
             case 4:
-                return Unit.ChaosChosen;
+                return Unit.CHAOSCHOSEN;
             case 5:
-                return Unit.MenAtArms;
+                return Unit.MENATARMS;
             case 6:
-                return Unit.Executioners;
+                return Unit.EXECUTIONERS;
             case 7:
-                return Unit.GraveGuard;
+                return Unit.GRAVEGUARD;
             case 8:
-                return Unit.Retributors;
+                return Unit.RETRIBUTORS;
             case 9:
-                return Unit.StormVermin;
+                return Unit.STORMVERMIN;
             case 10:
-                return Unit.SwordMasters;
+                return Unit.SWORDMASTERS;
             case 11:
-                return Unit.TombGuard;
+                return Unit.TOMBGUARD;
             case 12:
-                return Unit.WildWoodRangers;
+                return Unit.WILDWOODRANGERS;
         }
 
         return null;
@@ -266,5 +264,9 @@ public class Main {
                 "10 - Swordmasters\n" +
                 "11 - Tomb Guard\n" +
                 "12 - Wildwood Rangers\n");
+    }
+
+    private static void unitSelectionErrorMessage() {
+        System.out.println("Please enter a valid option: (1-12 are valid options)");
     }
 }
